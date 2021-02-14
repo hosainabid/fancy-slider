@@ -51,6 +51,14 @@ img {
   margin: 0 3px;
 }
 
+#iCounterText{
+  text-align: center;
+  padding-top: 15px;
+  padding-bottom: 15px;
+  border: 2px solid lightskyblue;
+  display: none;
+}
+
 .main {
   display: none;
 }

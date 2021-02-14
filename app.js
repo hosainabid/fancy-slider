@@ -4,6 +4,8 @@ const galleryHeader = document.querySelector('.gallery-header');
 const searchBtn = document.getElementById('search-btn');
 const sliderBtn = document.getElementById('create-slider');
 const sliderContainer = document.getElementById('sliders');
+const textCounter = document.getElementById('text-counter');
+const iCounterText = document.getElementById('iCounterText');
 // selected image 
 let sliders = [];
 
@@ -29,6 +31,8 @@ const KEY = '15674931-a9d714b6e9d654524df198e00&q';
 
 // show images 
 const showImages = (images) => {
+  textCounter.innerText = images.length;
+  iCounterText.style.display = 'block';
   imagesArea.style.display = 'block';
   gallery.innerHTML = '';
   // show gallery title
@@ -55,13 +59,14 @@ const selectItem = (event, img) => {
   
   let element = event.target;
   let item = sliders.indexOf(img);
+  element.classList.add("added");
+  console.log(item);
 
   if (item === -1) {
     sliders.push(img);
-    element.classList.toggle('added');
   } else {
-    sliders.pop(img);
-    element.classList.toggle('added');
+    sliders.splice(item, 1);
+    element.classList.remove('added');
   }
 }
 
@@ -85,7 +90,7 @@ const createSlider = () => {
   document.querySelector('.main').style.display = 'block';
   // hide image aria
   imagesArea.style.display = 'none';
-  const duration = document.getElementById('duration').value || 1000;
+  const duration = document.getElementById('duration').value >= 1000 || 1000;
   sliders.forEach(slide => {
     let item = document.createElement('div')
     item.className = "slider-item";
@@ -96,15 +101,8 @@ const createSlider = () => {
   })
   changeSlide(0)
   timer = setInterval(function (e) {
-    const durationInput = document.getElementById('duration').value;
-    const warningText = document.getElementById('warningText');
-    if(durationInput >= 0){
-      slideIndex++;
-      changeSlide(slideIndex);
-    } else{
-      console.log("Please enter a positive value");
-      // warningText.style.display = "block";
-    }
+    slideIndex++;
+    changeSlide(slideIndex);
   }, duration);
 }
 
