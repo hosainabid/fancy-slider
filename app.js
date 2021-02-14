@@ -7,6 +7,20 @@ const sliderContainer = document.getElementById('sliders');
 // selected image 
 let sliders = [];
 
+//Enter button functionality
+
+document.getElementById('duration').addEventListener("keypress", function(event){
+  if(event.key == 'Enter'){
+    document.getElementById('create-slider').click();
+  }
+})
+
+document.getElementById('search').addEventListener("keypress", function(event){
+  if(event.key == 'Enter'){
+    document.getElementById('search-btn').click();
+  }
+})
+
 
 // If this key doesn't work
 // Find the name in the url and go to their website
@@ -25,10 +39,11 @@ const showImages = (images) => {
     div.innerHTML = ` <img class="img-fluid img-thumbnail" onclick=selectItem(event,"${image.webformatURL}") src="${image.webformatURL}" alt="${image.tags}">`;
     gallery.appendChild(div)
   })
-
+  toggleSpinner();
 }
 
 const getImages = (query) => {
+  toggleSpinner();
   fetch(`https://pixabay.com/api/?key=${KEY}=${query}&image_type=photo&pretty=true`)
     .then(response => response.json())
     .then(data => showImages(data.hits))
@@ -37,16 +52,19 @@ const getImages = (query) => {
 
 let slideIndex = 0;
 const selectItem = (event, img) => {
+  
   let element = event.target;
-  element.classList.add('added');
- 
   let item = sliders.indexOf(img);
+
   if (item === -1) {
     sliders.push(img);
+    element.classList.toggle('added');
   } else {
-    alert('Hey, Already added !')
+    sliders.pop(img);
+    element.classList.toggle('added');
   }
 }
+
 var timer;
 const createSlider = () => {
   // check slider image length
@@ -115,6 +133,12 @@ const changeSlide = (index) => {
 
   items[index].style.display = "block"
 }
+
+const toggleSpinner = () =>{
+  const spinner = document.getElementById('loadingSpinner');
+  spinner.classList.toggle('d-none');
+}
+
 
 searchBtn.addEventListener('click', function () {
   document.querySelector('.main').style.display = 'none';
